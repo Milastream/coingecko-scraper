@@ -1,245 +1,264 @@
-[Coingecko Scraper](https://apify.com/parseforge/coingecko-scraper?fpr=data)
+[Coingecko Scraper](https://apify.com/automation-lab/coingecko-scraper?fpr=data)
 
-![ParseForge Banner](https://images.apifyusercontent.com/RHzPvdHJ2joNXJHSWjeziGDTOTaycOsfmbNq9q8ZVRM/w:1800/cb:1/aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL1BhcnNlRm9yZ2UvYXBpZnktYXNzZXRzL21haW4vYmFubmVyLmpwZw.webp)
+Extract cryptocurrency market data from CoinGecko. Get real-time prices, market caps, trading volumes, 24-hour changes, supply data, and all-time highs/lows for thousands of coins.
 
-# 💰 CoinGecko Cryptocurrency Scraper
+## What does CoinGecko Scraper do?
 
-> 🚀 Collect real-time prices, market cap, volume, supply metrics, and ATH/ATL records for 15,000+ cryptocurrencies. Filter by category, sort by market cap or volume, and export in seconds.
+CoinGecko Scraper uses the CoinGecko API to extract comprehensive market data for cryptocurrencies. It returns current prices, market capitalizations, trading volumes, price changes, circulating supply, and historical extremes (ATH/ATL) — all in a clean, structured format.
 
-> 🕒 Last updated: 2026-04-17
+Filter by category (DeFi, stablecoins, meme tokens, etc.), sort by market cap or volume, and choose your preferred currency.
 
-CoinGecko Scraper pulls live market data for thousands of cryptocurrencies. Each record includes the current price, market cap, 24h trading volume, fully diluted valuation, circulating and max supply, all-time high and low with dates, price change percentages across six timeframes (1h, 24h, 7d, 14d, 30d, 1y), and 7-day sparkline data for charting. You can filter by category (DeFi, gaming, layer-1, stablecoins) and sort by market cap or volume.
+## Who is CoinGecko Scraper for?
 
-Crypto traders use this to monitor price movements across their watchlist. DeFi builders feed it into protocol dashboards. Analysts compare performance across token categories. Portfolio tool developers pull live data without managing API keys or rate limits. If you need structured crypto market data at scale, this actor handles the collection and delivers clean, ready-to-use records.
+- **Crypto traders and portfolio managers** tracking prices, volumes, and market movements across thousands of coins
+- **Financial analysts** building market reports and comparing cryptocurrency performance metrics
+- **Data scientists** constructing datasets for crypto market research and predictive modeling
+- **Fintech developers** integrating live crypto data into dashboards, bots, and portfolio apps
+- **Journalists and content creators** sourcing accurate market data for crypto news coverage
+- **Academic researchers** studying cryptocurrency market dynamics and price correlations
 
-| Target | CoinGecko (15,000+ cryptocurrencies) |
+## Why scrape CoinGecko?
+
+CoinGecko tracks 14,000+ cryptocurrencies with data from 1,000+ exchanges. Use cases include:
+
+- **Price monitoring** — track crypto prices and set up automated alerts
+- **Portfolio analysis** — pull current market data for portfolio valuation
+- **Market research** — compare coins by market cap, volume, and price movement
+- **Trading signals** — monitor 24-hour price changes and volume spikes
+- **Data feeds** — pipe crypto data into dashboards, spreadsheets, or databases
+- **Academic research** — build datasets for cryptocurrency market analysis
+
+## How much does it cost to scrape CoinGecko?
+
+CoinGecko Scraper uses pay-per-event pricing:
+
+| Event | Price |
 | --- | --- |
-| Use Cases | Portfolio tracking, market analysis, price monitoring, DeFi research |
+| Run started | $0.001 |
+| Coin extracted | $0.001 per coin |
 
----
+**Example costs:**
 
-## 📋 What it does
+- Top 10 cryptocurrencies: ~$0.011
+- Top 100 by market cap: ~$0.101
+- Top 500 coins: ~$0.501
 
-- 💰 **Live market data.** Current price, market cap, volume, and fully diluted valuation for each coin.
-- 📈 **Multi-timeframe changes.** Price change percentages over 1h, 24h, 7d, 14d, 30d, and 1 year.
-- 📊 **Supply metrics.** Circulating, total, and maximum supply for token economics analysis.
-- 🏆 **ATH and ATL tracking.** All-time high and low prices with exact dates and distance from current price.
-- 🔍 **Category filtering.** Narrow results to DeFi, gaming, smart contract platforms, layer-2, stablecoins, and more.
+Platform costs are minimal — under $0.002 per run. CoinGecko's API is free and requires no API key.
 
-Each record represents one cryptocurrency with 30+ data points. Sparkline arrays provide 7-day price history for chart rendering right out of the box.
+## How to scrape cryptocurrency data from CoinGecko
 
-> 💡 **Why it matters:** Manually tracking prices and market caps across hundreds of tokens means switching between tabs and copying numbers. This actor delivers everything in a single structured dataset, updated on demand.
+1. Go to the [CoinGecko Scraper](https://apify.com/automation-lab/coingecko-scraper) page on Apify Store.
+2. Click **Try for free** to open the actor in Apify Console.
+3. Configure the input: choose a category, sort order, currency, and maximum number of coins.
+4. Click **Start** to begin extracting cryptocurrency data.
+5. Once the run finishes, download your results as JSON, CSV, or Excel from the **Dataset** tab.
 
----
+## Input parameters
 
-## 🎬 Full Demo
-
-*🚧 Coming soon: a 3-minute walkthrough showing how to go from sign-up to a downloaded dataset.*
-
----
-
-## ⚙️ Input
-
-| Input | Type | Default | Behavior |
+| Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `vsCurrency` | string | `"usd"` | Base currency for prices. Options: usd, eur, gbp, jpy, btc, eth. |
-| `maxItems` | integer | `10` | Maximum coins to return. Free users are limited to 10. Paid users can set up to 1,000,000. |
-| `category` | string | - | Filter by category slug (e.g. "decentralized-finance-defi", "gaming"). Leave empty for all coins. |
-| `order` | string | `"market_cap_desc"` | Sort order. Options: market_cap_desc, market_cap_asc, volume_desc, volume_asc. |
+| `category` | string | Filter by category (DeFi, stablecoins, meme tokens, etc.) | All |
+| `sortBy` | string | Sort: market_cap_desc, market_cap_asc, volume_desc, volume_asc | `market_cap_desc` |
+| `currency` | string | Price currency: usd, eur, gbp, jpy, btc, eth | `usd` |
+| `maxResults` | integer | Maximum coins to extract (1–1000) | `100` |
 
-**Example: top 100 coins by market cap in USD.**
-
-```
-{
-  "vsCurrency": "usd",
-  "maxItems": 100,
-  "order": "market_cap_desc"
-}
-```
-
-**Example: DeFi tokens sorted by volume.**
+### Input example
 
 ```
 {
-  "vsCurrency": "usd",
-  "category": "decentralized-finance-defi",
-  "maxItems": 50,
-  "order": "volume_desc"
+  "maxResults": 50,
+  "currency": "usd",
+  "sortBy": "market_cap_desc"
 }
 ```
 
-> ⚠️ **Good to Know:** CoinGecko tracks over 15,000 cryptocurrencies. Large requests (1,000+ coins) may take a few minutes to complete. Category slugs can be found on the CoinGecko categories page.
+## Output example
 
----
+Each coin is returned as a JSON object:
 
-## 📊 Output
+```
+{
+  "id": "bitcoin",
+  "symbol": "btc",
+  "name": "Bitcoin",
+  "image": "https://assets.coingecko.com/coins/images/1/large/bitcoin.png",
+  "currentPrice": 68186.00,
+  "marketCap": 1363800000000,
+  "marketCapRank": 1,
+  "totalVolume": 28500000000,
+  "high24h": 68500.00,
+  "low24h": 66200.00,
+  "priceChange24h": 1500.00,
+  "priceChangePercentage24h": 2.3,
+  "circulatingSupply": 19800000,
+  "totalSupply": 21000000,
+  "maxSupply": 21000000,
+  "ath": 108000.00,
+  "athChangePercentage": -36.8,
+  "athDate": "2024-12-17T15:02:41.429Z",
+  "atl": 67.81,
+  "atlChangePercentage": 100500.0,
+  "atlDate": "2013-07-06T00:00:00.000Z",
+  "lastUpdated": "2026-03-03T04:48:00.000Z",
+  "currency": "USD",
+  "scrapedAt": "2026-03-03T04:48:00.000Z"
+}
+```
 
-Each record contains **30+ fields**. Download as CSV, Excel, JSON, or XML.
+## What data can you extract from CoinGecko?
 
-### 🧾 Schema
-
-| Field | Type | Example |
+| Field | Type | Description |
 | --- | --- | --- |
-| 🖼️ `imageUrl` | string | `"https://assets.coingecko.com/coins/images/1/large/bitcoin.png"` |
-| 🏷️ `name` | string | `"Bitcoin"` |
-| 🔤 `symbol` | string | `"btc"` |
-| 💰 `currentPrice` | number | `67234.00` |
-| 📊 `marketCap` | number | `1324567890123` |
-| 🏅 `marketCapRank` | integer | `1` |
-| 📈 `totalVolume` | number | `28456789012` |
-| 📉 `priceChangePercentage24h` | number | `2.45` |
-| 🔄 `circulatingSupply` | number | `19700000` |
-| 🏆 `ath` | number | `73750.07` |
-| 📅 `athDate` | string | `"2024-03-14T07:10:36.635Z"` |
-| 📉 `atl` | number | `67.81` |
+| `id` | string | CoinGecko coin identifier |
+| `symbol` | string | Ticker symbol (btc, eth, etc.) |
+| `name` | string | Full coin name |
+| `image` | string | Coin logo URL |
+| `currentPrice` | number | Current price in selected currency |
+| `marketCap` | number | Total market capitalization |
+| `marketCapRank` | number | Rank by market cap |
+| `totalVolume` | number | 24-hour trading volume |
+| `high24h` | number | 24-hour high price |
+| `low24h` | number | 24-hour low price |
+| `priceChange24h` | number | Absolute price change in 24h |
+| `priceChangePercentage24h` | number | Percentage price change in 24h |
+| `circulatingSupply` | number | Coins currently in circulation |
+| `totalSupply` | number | Total supply (including locked) |
+| `maxSupply` | number | Maximum possible supply |
+| `ath` | number | All-time high price |
+| `athChangePercentage` | number | Change from ATH (%) |
+| `athDate` | string | Date of all-time high |
+| `atl` | number | All-time low price |
+| `atlChangePercentage` | number | Change from ATL (%) |
+| `atlDate` | string | Date of all-time low |
+| `currency` | string | Price currency (USD, EUR, etc.) |
+| `scrapedAt` | string | ISO timestamp of extraction |
 
-### 📦 Sample records
+## How to use the CoinGecko Scraper API
 
- 
- 
- 
+### Python
 
----
+```
+from apify_client import ApifyClient
 
-## ✨ Why choose this Actor
+client = ApifyClient("YOUR_API_TOKEN")
 
-|  | Capability |
-| --- | --- |
-| 💰 | **15,000+ coins.** Access market data for virtually every listed cryptocurrency. |
-| 📈 | **Six timeframes.** Price changes over 1h, 24h, 7d, 14d, 30d, and 1 year in one record. |
-| 🏆 | **ATH and ATL records.** All-time high and low prices with exact dates for historical context. |
-| 📊 | **Sparkline data.** 7-day price arrays ready for chart rendering without extra API calls. |
-| 🔍 | **Category filtering.** Focus on DeFi, gaming, layer-1, or any other token category. |
-| 💱 | **Multi-currency.** View prices in USD, EUR, GBP, JPY, BTC, or ETH. |
-| ⚡ | **Fast collection.** Hundreds of coins returned in seconds with structured, consistent fields. |
+run = client.actor("automation-lab/coingecko-scraper").call(run_input={
+    "maxResults": 20,
+    "currency": "usd",
+    "sortBy": "market_cap_desc",
+})
 
-> CoinGecko tracks over 15,000 cryptocurrencies across 800+ exchanges, making it one of the largest crypto data aggregators in the world.
+for coin in client.dataset(run["defaultDatasetId"]).iterate_items():
+    print(f"{coin['marketCapRank']:3d}. {coin['name']:15s} ${coin['currentPrice']:>10,.2f}  24h: {coin['priceChangePercentage24h']:+.1f}%")
+```
 
----
+### Node.js
 
-## 📈 How it compares to alternatives
+```
+import { ApifyClient } from 'apify-client';
 
-| Approach | Cost | Coverage | Refresh | Setup |
-| --- | --- | --- | --- | --- |
-| **⭐ CoinGecko Scraper** *(this Actor)* | $5 free credit, then pay-per-use | 15,000+ coins, 30+ fields | **Live per run** | ⚡ 2 min |
-| Official API (free tier) | Free | Rate-limited, fewer fields | Real-time | 15 min |
-| Manual browsing | Free (your time) | One coin at a time | Manual | Slow |
-| Third-party data providers | $100+/month | Varies | Hourly or daily | Hours |
+const client = new ApifyClient({ token: 'YOUR_API_TOKEN' });
 
-Pick this actor when you need bulk crypto market data without managing API keys, rate limits, or pagination.
+const run = await client.actor('automation-lab/coingecko-scraper').call({
+    maxResults: 20,
+    currency: 'usd',
+    sortBy: 'market_cap_desc',
+});
 
----
+const { items } = await client.dataset(run.defaultDatasetId).listItems();
+items.forEach(coin => {
+    console.log(`${coin.marketCapRank}. ${coin.name}: $${coin.currentPrice.toLocaleString()}`);
+});
+```
 
-## 🚀 How to use
+### REST API
 
-1. 📝 **Sign up.** [Create a free account with $5 credit](https://console.apify.com/sign-up?fpr=vmoqkp) (takes 2 minutes).
-2. 🌐 **Open the Actor.** Go to the CoinGecko Scraper page on the Apify Store.
-3. 🎯 **Set input.** Choose your base currency, category filter, sort order, and max items.
-4. 🚀 **Run it.** Click **Start** and let the Actor collect your data.
-5. 📥 **Download.** Grab your results in the **Dataset** tab as CSV, Excel, JSON, or XML.
+```
+curl -X POST "https://api.apify.com/v2/acts/automation-lab~coingecko-scraper/runs?token=YOUR_API_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"maxResults": 50, "currency": "usd"}'
+```
 
-> ⏱️ Total time from signup to downloaded dataset: **3-5 minutes.** No coding required.
+## Integrations
 
----
+Connect CoinGecko Scraper to hundreds of apps:
 
-## 💼 Business use cases
+- **Google Sheets** — auto-update crypto portfolio spreadsheets
+- **Slack / Microsoft Teams** — price alerts and daily market summaries
+- **Zapier / Make** — trigger workflows on price changes
+- **Amazon S3 / Google Cloud Storage** — archive historical market data
+- **Webhook** — pipe data to your trading bot or dashboard
 
-| ### 📈 Trading and Analytics     - Monitor price changes across your watchlist in real time - Track volume spikes to identify momentum shifts - Compare ATH distances to find undervalued tokens - Build screeners filtered by category and market cap | ### 🏗️ DeFi and Protocol Development     - Feed live token prices into protocol dashboards - Track circulating supply changes for tokenomics modeling - Monitor competitor token market caps and volumes - Build automated alerts for price threshold crossings |
-| --- | --- |
-| ### 📊 Research and Reporting     - Analyze performance trends across token categories - Compare layer-1 vs layer-2 market cap ratios over time - Study ATH/ATL patterns for market cycle research - Generate weekly market summary reports automatically | ### 🛠️ Portfolio and App Development     - Power real-time portfolio trackers with live price feeds - Build comparison tools showing side-by-side token stats - Create leaderboard views sorted by any metric - Feed sparkline data into chart components directly |
+## Tips and best practices
 
----
+1. **Schedule regular runs** — set up hourly or daily schedules to track price movements over time.
+2. **Categories** — use category filters to focus on specific sectors like DeFi, gaming, or stablecoins.
+3. **Multiple currencies** — use `btc` or `eth` as currency to see relative performance against major cryptos.
+4. **Volume sorting** — sort by volume to spot coins with unusual trading activity.
+5. **ATH/ATL analysis** — use `athChangePercentage` to find coins trading far below their all-time high.
+6. **Rate limits** — CoinGecko's free API allows 10-30 calls/minute. The scraper handles this automatically.
 
----
+## Use with AI agents via MCP
 
-## 🌟 Beyond business use cases
+CoinGecko Scraper is available as a tool for AI assistants via the [Model Context Protocol (MCP)](https://docs.apify.com/platform/integrations/mcp).
 
-Data like this powers more than commercial workflows. The same structured records support research, education, civic projects, and personal initiatives.
+### Setup for Claude Code
 
-| ### 🎓 Research and academia     - Empirical datasets for papers, thesis work, and coursework - Longitudinal studies tracking changes across snapshots - Reproducible research with cited, versioned data pulls - Classroom exercises on data analysis and ethical scraping | ### 🎨 Personal and creative     - Side projects, portfolio demos, and indie app launches - Data visualizations, dashboards, and infographics - Content research for bloggers, YouTubers, and podcasters - Hobbyist collections and personal trackers |
-| --- | --- |
-| ### 🤝 Non-profit and civic     - Transparency reporting and accountability projects - Advocacy campaigns backed by public-interest data - Community-run databases for local issues - Investigative journalism on public records | ### 🧪 Experimentation     - Prototype AI and machine-learning pipelines with real data - Validate product-market hypotheses before engineering spend - Train small domain-specific models on niche corpora - Test dashboard concepts with live input |
+```
+$claude mcp add --transport http apify "https://mcp.apify.com?tools=automation-lab/coingecko-scraper"
+```
 
-## 🤖 Ask an AI assistant about this scraper
+### Setup for Claude Desktop, Cursor, or VS Code
 
-Open a ready-to-send prompt about this ParseForge actor in the AI of your choice:
+Add this to your MCP config file:
 
-- 💬 [**ChatGPT**](https://chat.openai.com/?q=How%20do%20I%20use%20the%20CoinGecko%20Cryptocurrency%20Scraper%20by%20ParseForge%20on%20Apify%3F%20Show%20me%20input%20examples%2C%20output%20fields%2C%20common%20use%20cases%2C%20and%20how%20to%20integrate%20it%20into%20a%20workflow.)
-- 🧠 [**Claude**](https://claude.ai/new?q=How%20do%20I%20use%20the%20CoinGecko%20Cryptocurrency%20Scraper%20by%20ParseForge%20on%20Apify%3F%20Show%20me%20input%20examples%2C%20output%20fields%2C%20common%20use%20cases%2C%20and%20how%20to%20integrate%20it%20into%20a%20workflow.)
-- 🔍 [**Perplexity**](https://perplexity.ai/search?q=How%20do%20I%20use%20the%20CoinGecko%20Cryptocurrency%20Scraper%20by%20ParseForge%20on%20Apify%3F%20Show%20me%20input%20examples%2C%20output%20fields%2C%20common%20use%20cases%2C%20and%20how%20to%20integrate%20it%20into%20a%20workflow.)
-- 🅒 [**Copilot**](https://copilot.microsoft.com/?q=How%20do%20I%20use%20the%20CoinGecko%20Cryptocurrency%20Scraper%20by%20ParseForge%20on%20Apify%3F%20Show%20me%20input%20examples%2C%20output%20fields%2C%20common%20use%20cases%2C%20and%20how%20to%20integrate%20it%20into%20a%20workflow.)
+```
+{
+    "mcpServers": {
+        "apify": {
+            "url": "https://mcp.apify.com?tools=automation-lab/coingecko-scraper"
+        }
+    }
+}
+```
 
-## ❓ Frequently Asked Questions
+### Example prompts
 
-### 💳 Do I need a paid Apify plan to run this actor?
+- "Get the top 20 cryptocurrencies by market cap"
+- "What's the current price of Bitcoin and Ethereum?"
+- "Show me the biggest crypto gainers and losers in the last 24 hours"
 
-No. You can start right now on the free Apify plan, which includes **$5 in free monthly credit**. That is enough to run this actor several times and explore the output before committing to anything. Paid plans unlock higher limits, more concurrent runs, and larger datasets. [Create a free Apify account here](https://console.apify.com/sign-up?fpr=vmoqkp) to get started.
+## FAQ
 
-### 🚨 What happens if my run fails or returns no results?
+**Q: How often is the data updated?**
+A: CoinGecko updates prices every 1-2 minutes from 1,000+ exchanges.
 
-Failed runs are not charged. If the source site changes, proxies get rate-limited, or a specific input matches nothing, re-run the actor or open our [contact form](https://tally.so/r/BzdKgA) and we will investigate. You can also check the run log in the Apify console to see why the run stopped.
+**Q: Does it need an API key?**
+A: No. CoinGecko's public API is free for market data.
 
-### 📏 How many items can I scrape per run?
+**Q: Can I get historical price data?**
+A: This scraper returns current market snapshots. For historical data, schedule regular runs to build your own time series.
 
-Free users are limited to **10 items per run** so you can preview the output and confirm the actor works for your use case. Paid users can raise `maxItems` up to **1,000,000** per run. [Upgrade here](https://console.apify.com/sign-up?fpr=vmoqkp) if you need full scale.
+**Q: What coins are available?**
+A: CoinGecko tracks 14,000+ cryptocurrencies including all major coins and most altcoins.
 
-### 🕒 How fresh is the data?
+**Q: The scraper returns an error about rate limits.**
+A: CoinGecko's free API allows 10-30 calls per minute. If you request a large number of coins (500+), the scraper pages through results and may hit the rate limit. The scraper handles this with automatic retries, but if errors persist, try reducing `maxResults` or running during off-peak hours.
 
-Every run fetches live data at the moment of execution. There is no cache or delay: the records you get reflect what the source returned at that moment. Schedule the actor to maintain a rolling snapshot of the data you need.
+**Q: Prices seem outdated or stale.**
+A: CoinGecko updates prices every 1-2 minutes, but the free API tier may serve slightly cached data. If you need real-time prices, schedule frequent runs (e.g., every 5 minutes) and compare the `lastUpdated` timestamp in the output.
 
-### 🧑‍💻 Can I call this actor from my own code?
+## Is it legal to scrape CoinGecko?
 
-Yes. Apify exposes every actor as a REST endpoint and ships first-class SDKs for [Node.js](https://docs.apify.com/sdk/js) and [Python](https://docs.apify.com/sdk/python). You can start a run, read the dataset, and handle webhooks from your own app in a few lines. All you need is your Apify API token.
+CoinGecko Scraper uses the CoinGecko public API, which is freely available and does not require authentication for basic market data. The scraper respects CoinGecko's rate limits and operates within the terms of their public API tier.
 
-### 📤 How do I export the data?
+Cryptocurrency market data (prices, volumes, market caps) is factual, publicly available information aggregated from exchanges. Extracting this data for analysis, research, or personal use is standard practice across the financial industry.
 
-Every Apify dataset can be downloaded in one click from the console as CSV, JSON, JSONL, Excel, HTML, XML, or RSS. You can also pull results programmatically via the [Apify API](https://docs.apify.com/api/v2) or stream them into BigQuery, S3, and other destinations through built-in integrations.
+If you plan to redistribute CoinGecko data commercially, review [CoinGecko's API Terms of Service](https://www.coingecko.com/en/api_terms) for any attribution requirements or usage restrictions that may apply.
 
-### 📅 Can I schedule the actor to run automatically?
+## Other data scrapers
 
-Yes. Use the Apify scheduler to run the actor on any cadence, from hourly to monthly. Results are saved to your dataset and can be delivered to webhooks, email, Slack, cloud storage, or automation tools such as Zapier and Make.
-
----
-
-## 🔌 Automating CoinGecko Scraper
-
-Control the scraper programmatically for scheduled runs and pipeline integrations:
-
-- 🟢 **Node.js.** Install the `apify-client` NPM package.
-- 🐍 **Python.** Use the `apify-client` PyPI package.
-- 📚 See the [Apify API documentation](https://docs.apify.com/api/v2) for full details.
-
-The [Apify Schedules feature](https://docs.apify.com/platform/schedules) lets you trigger this Actor on any cron interval. Schedule hourly runs to build a historical crypto price database.
-
-## 🔌 Integrate with any app
-
-CoinGecko Scraper connects to any cloud service via [Apify integrations](https://apify.com/integrations):
-
-- [**Make**](https://docs.apify.com/platform/integrations/make) - Automate multi-step workflows
-- [**Zapier**](https://docs.apify.com/platform/integrations/zapier) - Connect with 5,000+ apps
-- [**Slack**](https://docs.apify.com/platform/integrations/slack) - Get run notifications
-- [**Airbyte**](https://docs.apify.com/platform/integrations/airbyte) - Pipe data into your warehouse
-- [**GitHub**](https://docs.apify.com/platform/integrations/github) - Trigger runs from commits
-- [**Google Drive**](https://docs.apify.com/platform/integrations/drive) - Export datasets straight to Sheets
-
-You can also use webhooks to trigger downstream actions when a run finishes.
-
----
-
-## 🔗 Recommended Actors
-
-- [**📊 FRED Economic Data Scraper**](https://apify.com/parseforge/fred-scraper) - Pull Federal Reserve economic time-series data
-- [**💼 SEC EDGAR Full Text Search**](https://apify.com/parseforge/sec-edgar-full-text-search-scraper) - Search SEC filings by keyword
-- [**📈 BLS Wage Data Scraper**](https://apify.com/parseforge/bls-wage-data-scraper) - Get employment and wage statistics
-- [**🏥 OpenFDA Drug Scraper**](https://apify.com/parseforge/openfda-drug-scraper) - FDA drug labels and adverse events
-- [**⚽ ESPN Sports Scraper**](https://apify.com/parseforge/espn-sports-scraper) - Live scores, standings, and rosters
-
-> 💡 **Pro Tip:** browse the complete [ParseForge collection](https://apify.com/parseforge) for more data scrapers and tools.
-
----
-
-**🆘 Need Help?** [**Open our contact form**](https://tally.so/r/BzdKgA) to request a new scraper, propose a custom data project, or report an issue.
-
----
-
-> **⚠️ Disclaimer:** this Actor is an independent tool and is not affiliated with, endorsed by, or sponsored by CoinGecko. All trademarks mentioned are the property of their respective owners. Only publicly available data is collected.
+- [Yahoo Finance Scraper](https://apify.com/automation-lab/yahoo-finance-scraper) — scrape stock quotes, financials, and market data
+- [Exchange Rate Scraper](https://apify.com/automation-lab/exchange-rate-scraper) — get current and historical currency exchange rates
+- [World Bank Data Scraper](https://apify.com/automation-lab/worldbank-scraper) — extract economic indicators and development data
+- [SEC EDGAR Scraper](https://apify.com/automation-lab/sec-edgar-scraper) — scrape SEC filings and financial disclosures
