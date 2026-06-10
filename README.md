@@ -1,148 +1,42 @@
-[Coingecko Scraper](https://apify.com/makework36/coingecko-scraper?fpr=data)
+[Coingecko Scraper](https://apify.com/plantane/coingecko-scraper?fpr=data)
 
-# CoinGecko Crypto Scraper
+Apify actor that scrapes cryptocurrency data from CoinGecko's free public API.
 
-Get cryptocurrency prices, market rankings, trending coins, and global market stats from the CoinGecko API. No API key required.
+## Features
 
-## What data does it extract?
+- **Markets mode** — Top coins by market cap with full pricing data
+- **Trending mode** — Currently trending coins on CoinGecko
+- **Search mode** — Search for specific coins by name/symbol
+- **Optional detail enrichment** — Fetch extra data (description, links, sentiment) per coin
 
-### Markets / Coin Detail mode
+## Input
 
-| Field | Description |
-| --- | --- |
-| `id` | CoinGecko identifier (e.g. `bitcoin`) |
-| `symbol` | Ticker symbol (e.g. `btc`) |
-| `name` | Full coin name |
-| `currentPrice` | Current price in your chosen currency |
-| `marketCap` | Market capitalization |
-| `marketCapRank` | Rank by market cap |
-| `volume24h` | 24-hour trading volume |
-| `priceChange24h` | Absolute 24h price change |
-| `priceChangePercent24h` | Percentage 24h price change |
-| `high24h` | 24-hour high price |
-| `low24h` | 24-hour low price |
-| `ath` | All-time high price |
-| `athDate` | Date of all-time high |
-| `circulatingSupply` | Coins currently in circulation |
-| `totalSupply` | Total supply |
-| `image` | Coin logo URL |
+| Field | Type | Default | Description |
+| --- | --- | --- | --- |
+| `mode` | string | `"markets"` | `markets`, `trending`, or `search` |
+| `vs_currency` | string | `"usd"` | Target currency for prices |
+| `per_page` | integer | `100` | Results per API page (max 250) |
+| `max_items` | integer | `10` | Maximum items to return |
+| `search_query` | string | `""` | Query for search mode |
+| `order` | string | `"market_cap_desc"` | Sort order for markets |
+| `include_details` | boolean | `false` | Fetch extra detail per coin |
+
+## Output
+
+### Markets mode
+
+Full market data: id, symbol, name, image, current_price, market_cap, market_cap_rank, fully_diluted_valuation, total_volume, high_24h, low_24h, price_change_24h, price_change_percentage_24h, circulating_supply, total_supply, max_supply, ath, ath_change_percentage, ath_date, atl, atl_change_percentage, atl_date, last_updated.
+
+With `include_details`: also description, homepage, genesis_date, sentiment data.
 
 ### Trending mode
 
-| Field | Description |
-| --- | --- |
-| `id` | CoinGecko identifier |
-| `symbol` | Ticker symbol |
-| `name` | Coin name |
-| `marketCapRank` | Market cap rank |
-| `priceBtc` | Price in BTC |
-| `priceUsd` | Price in USD |
-| `score` | Trending score |
-| `thumb` | Thumbnail image URL |
-| `marketCap` | Market capitalization |
-| `totalVolume` | Trading volume |
+id, name, symbol, market_cap_rank, thumb, score.
 
-### Global mode
+### Search mode
 
-| Field | Description |
-| --- | --- |
-| `activeCryptocurrencies` | Number of active cryptocurrencies |
-| `markets` | Number of active markets |
-| `totalMarketCapUsd` | Total market cap in USD |
-| `totalVolumeUsd` | Total 24h volume in USD |
-| `btcDominance` | Bitcoin dominance percentage |
-| `ethDominance` | Ethereum dominance percentage |
-| `marketCapChangePercent24hUsd` | 24h market cap change % |
-| `marketCapPercentage` | Market cap share per coin |
-| `updatedAt` | Last update timestamp |
+id, name, symbol, market_cap_rank, thumb.
 
-## Use cases
+## Rate Limits
 
-- **Portfolio dashboards** -- Pull live prices for your holdings into Google Sheets or a database.
-- **Market screening** -- Rank the top 500 coins by market cap and filter by price change.
-- **Trend spotting** -- Check which coins are trending on CoinGecko right now.
-- **DeFi research** -- Filter by category (e.g. `decentralized-finance-defi`) to analyze specific sectors.
-- **Market snapshots** -- Get a daily global overview of total crypto market cap and BTC dominance.
-
-## How to use
-
-**Get the top 50 coins by market cap:**
-
-```
-{
-    "mode": "markets",
-    "vsCurrency": "usd",
-    "maxResults": 50
-}
-```
-
-**See what's trending right now:**
-
-```
-{
-    "mode": "trending"
-}
-```
-
-**Get details for specific coins in EUR:**
-
-```
-{
-    "mode": "coin_detail",
-    "coinIds": ["bitcoin", "ethereum", "solana"],
-    "vsCurrency": "eur"
-}
-```
-
-## Input parameters
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| `mode` | enum | `"markets"` | `markets`, `trending`, `global`, or `coin_detail` |
-| `vsCurrency` | string | `"usd"` | Quote currency (e.g. `usd`, `eur`, `btc`) |
-| `maxResults` | integer | `100` | Max coins to return in markets mode (1-500) |
-| `coinIds` | string[] | `[]` | CoinGecko IDs for coin_detail mode |
-| `category` | string | `""` | Category filter for markets mode (e.g. `layer-1`, `meme-token`) |
-
-## Output example
-
-```
-{
-    "id": "bitcoin",
-    "symbol": "btc",
-    "name": "Bitcoin",
-    "currentPrice": 67432.00,
-    "marketCap": 1328456789012,
-    "marketCapRank": 1,
-    "volume24h": 28945678901,
-    "priceChange24h": 1234.56,
-    "priceChangePercent24h": 1.87,
-    "high24h": 68100.00,
-    "low24h": 66200.00,
-    "ath": 73750.00,
-    "athDate": "2025-11-14T09:15:00.000Z",
-    "circulatingSupply": 19623450,
-    "totalSupply": 21000000,
-    "image": "https://assets.coingecko.com/coins/images/1/large/bitcoin.png"
-}
-```
-
-## Performance & cost
-
-- Markets mode fetches up to 250 coins per API call, so 500 coins takes just 2 requests.
-- A 2.5-second delay is applied between pages to respect CoinGecko's free tier rate limits (10-30 req/min).
-- A typical run for 100 coins completes in under 10 seconds and costs less than $0.01 on Apify.
-
-## FAQ
-
-**Do I need a CoinGecko API key?**
-No. The actor uses the free public API. Rate limits are 10-30 requests per minute, and the actor handles retries with exponential backoff on 429 responses.
-
-**What coin IDs should I use in coin_detail mode?**
-CoinGecko IDs are lowercase slugs like `bitcoin`, `ethereum`, `solana`. You can find them on any CoinGecko coin page in the URL, or use markets mode first to discover IDs.
-
-**Can I get prices in EUR or BTC?**
-Yes. Set `vsCurrency` to any currency CoinGecko supports: `usd`, `eur`, `gbp`, `jpy`, `btc`, `eth`, and many more.
-
-**How current is the data?**
-CoinGecko updates prices every 1-2 minutes on the free tier. The data you get is near real-time.
+CoinGecko's free API allows ~10-30 requests/minute. The scraper adds 1.5s delays between requests and handles 429 responses with a 60s backoff.
